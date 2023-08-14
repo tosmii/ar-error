@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <title>CHANDRAYAN 3</title>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  </head>
+
+  <body>
+    <a-scene>
+      <!--asset management system-->
+      <a-assets>
+        <img id="sky" src="sky.jpg">
+        <a-asset-item id="moon-o" src="Moon.obj"></a-asset-item>
+        <a-asset-item id="moon-m" src="Moon.mtl"></a-asset-item>
+        <a-asset-item id="ufo-o" src="UFO.obj"></a-asset-item>
+        <a-asset-item id="ufo-m" src="UFO.mtl"></a-asset-item>
+
+      </a-assets>
+
+      <!--sky-->
+      <a-sky src="#sky"></a-sky> 
+      
+      <!--moon base-->
+      <a-entity obj-model="obj: #moon-o; mtl: #moon-m"></a-entity>
+
+      <!--camera-->
+      <a-entity position="0 25 100"> 
+        <a-camera></a-camera>
+      </a-entity>
+
+      <!--ufo-->
+      <a-entity obj-model="obj: #ufo-o; mtl: #ufo-m"
+                position="0 0 5"
+                scale="0.5 0.5 0.5"
+                rotation="0 200 0">
+      </a-entity>
+
+      
+    </a-scene>
+  </body>
+</html>
