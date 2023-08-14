@@ -1,41 +1,55 @@
-<!doctype html>
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CHANDRAYAN 3</title>
-    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-  </head>
-
-  <body>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+</head>
+<body>
     <a-scene>
-      <!--asset management system-->
-      <a-assets>
-        <img id="sky" src="sky.jpg">
-        <a-asset-item id="moon-o" src="Moon.obj"></a-asset-item>
-        <a-asset-item id="moon-m" src="Moon.mtl"></a-asset-item>
-        <a-asset-item id="ufo-o" src="UFO.obj"></a-asset-item>
-        <a-asset-item id="ufo-m" src="UFO.mtl"></a-asset-item>
+        <a-sky src="sky.jpg"></a-sky>
 
-      </a-assets>
+        <a-entity
+            obj-model="obj: url(UFO.obj); mtl: url(Textures.rar)"
+            position="0 1 -5"
+            scale="0.1 0.1 0.1"
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"> 
+        </a-entity>
 
-      <!--sky-->
-      <a-sky src="#sky"></a-sky> 
-      
-      <!--moon base-->
-      <a-entity obj-model="obj: #moon-o; mtl: #moon-m"></a-entity>
-
-      <!--camera-->
-      <a-entity position="0 25 100"> 
-        <a-camera></a-camera>
-      </a-entity>
-
-      <!--ufo-->
-      <a-entity obj-model="obj: #ufo-o; mtl: #ufo-m"
-                position="0 0 5"
-                scale="0.5 0.5 0.5"
-                rotation="0 200 0">
-      </a-entity>
-
-      
+        <a-entity
+            id="moon"
+            obj-model="obj: url(Moon.obj); mtl: url(Textures.rar)"
+            position="2 0 -10"
+            scale="0.5 0.5 0.5">
+        </a-entity>
+        
+        <a-camera position="0 2 0"></a-camera>
+        
+        <a-light type="ambient" color="#888"></a-light>
+        <a-light type="directional" position="-3 3 1" intensity="1.5"></a-light>
     </a-scene>
-  </body>
+
+    <script>
+        var scene = document.querySelector('a-scene');
+        var ufo = scene.querySelector('[obj-model="obj: url(UFO.obj); mtl: url(Textures.rar)"]');
+        var moon = scene.querySelector('#moon');
+        var angle = 0;
+        var radius = 5;
+
+        function updateUfoPosition() {
+            var x = moon.getAttribute('position').x + radius * Math.cos(angle);
+            var z = moon.getAttribute('position').z + radius * Math.sin(angle);
+            ufo.setAttribute('position', { x: x, y: 1, z: z });
+            
+            var ufoVisible = z >= moon.getAttribute('position').z;
+            ufo.setAttribute('visible', ufoVisible);
+            
+            angle += 0.01; 
+            requestAnimationFrame(updateUfoPosition);
+        }
+
+        updateUfoPosition();
+    </script>
+</body>
 </html>
