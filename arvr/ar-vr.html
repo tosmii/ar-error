@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHANDRAYAN 3</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+</head>
+<body>
+    <a-scene>
+        <a-sky src="sky.jpg"></a-sky>
+
+        <a-entity
+            obj-model="obj: url(UFO.obj); mtl: url(Textures.rar)"
+            position="0 1 -5"
+            scale="0.1 0.1 0.1"
+            animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"> 
+        </a-entity>
+
+        <a-entity
+            id="moon"
+            obj-model="obj: url(Moon.obj); mtl: url(Textures.rar)"
+            position="2 0 -10"
+            scale="0.5 0.5 0.5">
+        </a-entity>
+        
+        <a-camera position="0 2 0"></a-camera>
+        
+        <a-light type="ambient" color="#888"></a-light>
+        <a-light type="directional" position="-3 3 1" intensity="1.5"></a-light>
+    </a-scene>
+
+    <script>
+        var scene = document.querySelector('a-scene');
+        var ufo = scene.querySelector('[obj-model="obj: url(UFO.obj); mtl: url(Textures.rar)"]');
+        var moon = scene.querySelector('#moon');
+        var angle = 0;
+        var radius = 5;
+
+        function updateUfoPosition() {
+            var x = moon.getAttribute('position').x + radius * Math.cos(angle);
+            var z = moon.getAttribute('position').z + radius * Math.sin(angle);
+            ufo.setAttribute('position', { x: x, y: 1, z: z });
+            
+            var ufoVisible = z >= moon.getAttribute('position').z;
+            ufo.setAttribute('visible', ufoVisible);
+            
+            angle += 0.01; 
+            requestAnimationFrame(updateUfoPosition);
+        }
+
+        updateUfoPosition();
+    </script>
+</body>
+</html>
